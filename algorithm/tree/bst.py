@@ -10,6 +10,9 @@ class BinarySearchTree:
     >>> tree.put(1, 'a')
     >>> tree.size()
     1
+    >>> tree.put(1, 'a')
+    >>> tree.size()
+    1
     >>> tree.put(2, 'b')
     >>> tree.size()
     2
@@ -34,11 +37,11 @@ class BinarySearchTree:
     >>> tree.put(35, 'e')
     >>> tree.delete(30)
     (True, 'c')
-    >>> tree.printNode()
-    10 b
-    20 a
-    25 d
-    35 e
+    >>> tree.printNodes()
+    10: b
+    20: a
+    25: d
+    35: e
     '''
     
     def __init__(self):
@@ -46,20 +49,22 @@ class BinarySearchTree:
         self.root = None
         
     def put(self, key, value):
-        self.root =self._put(self.root, key, value)
-        self.n = self.n + 1
+        self.root, addNode =self._put(self.root, key, value)
+        if (addNode != None):
+            self.n = self.n + 1
 
     def _put(self, node, key, value): 
         if(node == None):
-            return TreeNode(key, value)
+            addNode = TreeNode(key, value)
+            return addNode, addNode
         if (node.key == key):
             node.value = value
-            return node
+            return node, None
         if (node.key > key):
-            node.leftChild = self._put(node.leftChild, key, value)
+            node.leftChild, addNode = self._put(node.leftChild, key, value)
         else:
-            node.rightChild = self._put(node.rightChild, key, value)
-        return node
+            node.rightChild, addNode = self._put(node.rightChild, key, value)
+        return node, addNode
 
     def size(self):
         return self.n
@@ -117,17 +122,31 @@ class BinarySearchTree:
             node.leftChild, delNode = self._delete(node.leftChild, key)
         return node, delNode
 
-    def printNode(self):
-        self._printNode(self.root)
+    def printNodes(self):
+        self._printNodes(self.root)
 
-    def _printNode(self, node):
+    def _printNodes(self, node):
         if (node == None):
             return
         if (node.leftChild != None):
-            self._printNode(node.leftChild)
-        print(node.key, node.value)
+            self._printNodes(node.leftChild)
+        print(node)
         if (node.rightChild != None):
-            self._printNode(node.rightChild)
+            self._printNodes(node.rightChild)
+
+    def check_order(self):
+        self._check_order(self.root)
+
+    def _check_order(self, node):
+        if node is None:
+            return True
+        if node.leftChild and node.leftChild.key > node.key:
+          raise AssertionError('left child greater than parent')
+        if node.rightChild and node.rightChild.key < node.key:
+           raise AssertionError('right child less than parent')
+        self._check_order(node.leftChild)
+        self._check_order(node.rightChild)
+
 
 class TreeNode:
     def __init__(self, key, value):
@@ -136,11 +155,12 @@ class TreeNode:
         self.leftChild = None
         self.rightChild = None
     
+    def __str__(self):
+        return str(self.key) + ": " + str(self.value)
 
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
-    print('test success')
     
 
         
