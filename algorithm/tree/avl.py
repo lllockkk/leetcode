@@ -1,3 +1,4 @@
+import time
 import algorithm.tree.bst as bst
 
 
@@ -104,10 +105,10 @@ class AVLTreeNode(bst.TreeNode):
         self.height = height
 
 
-if __name__ == "__main__":
+def test():
     tree = AVLTree()
 
-    with open('../../nums.txt', 'r') as f:
+    with open('../../nums10000.txt', 'r') as f:
         lines = [line.strip('\n') for line in f.readlines()]
     for line in lines:
         tree.put(line, line)
@@ -132,6 +133,14 @@ if __name__ == "__main__":
 
     print(tree.size())
     tree.check()
+
+if __name__ == "__main__":
+    begin = time.time()
+    for i in range(10):
+        test()
+    end = time.time()
+    print (end - begin)
+
 
 
 

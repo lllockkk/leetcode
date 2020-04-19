@@ -8,29 +8,29 @@ class RedBlackTree(bst.BinarySearchTree):
         self._fixAfterInsert(addNode)
 
     def _insert(self, key, value):
+        if not self.root:
+            self.n += 1
+            self.root = RedBlackTreeNode(key, value, True, None)
+            return None
+
         p = None
         c = self.root
 
         while c:
+            p = c
             if c.key == key:
                 c.value = value
                 return None
             elif c.key < key:
-                p = c
                 c = c.rightChild
             else:
-                p = c
                 c = c.leftChild
-        
-        addNode = RedBlackTreeNode(key, value, True, None)
-        if not p:
-            self.root = addNode
-        elif p.key < key:
+
+        addNode = RedBlackTreeNode(key, value, True, p)
+        if p.key < key:
             p.rightChild = addNode
-            addNode.parent = p
         else:
             p.leftChild = addNode
-            addNode.parent = p
 
         self.n += 1
         return addNode
@@ -369,22 +369,14 @@ def buildTree():
 
 if __name__ == "__main__":
     begin = time.time()
-    for i in range(10):
-        tree = RedBlackTree()
-
-        for i in range(10000):
-            tree.put(i, i)
-            tree.put(i, i)
-        print(tree.size())
-        # delete
-        # for i in range(10000):
-        #     if i % 3 == 0:
-        #         tree.delete(i)
+    for i in range(1):
         # test('../../nums10000.txt')
-        # testMap('../../nums10000.txt')
+        tree = RedBlackTree()
+        for line in range(100000):
+            tree.put(line, line)
     end = time.time()
 
-    print (end - begin)
+    print ((end - begin) * 1000)
     # test('../../nums100.txt')
     # tree = buildTree()
     # print(tree.size())

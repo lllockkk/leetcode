@@ -1,3 +1,4 @@
+import time
 import red_black_set_mod
 
 
@@ -5,18 +6,20 @@ import red_black_set_mod
 
 
 if __name__ == '__main__':
-    tree = red_black_set_mod.RedBlackTree()
 
     # for i in range(9):
     #     tree.add(i)
     # print(tree)
     # tree.to_dot()
 
-    with open("nums10000.txt", 'r') as f:
-        lines = [line.strip('\n') for line in f.readlines()]
-    for line in lines:
+    begin = time.time()
+
+    tree = red_black_set_mod.RedBlackTree()
+    for line in range(100000):
         tree.add(line)
-        tree.add(line)
+    end = time.time()
+
+    print ((end - begin) * 1000)
     #
     # tree.check()
     #
